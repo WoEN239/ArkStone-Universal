@@ -110,7 +110,7 @@ const uint8_t PUCK_SENSOR_TCS34725_SOFTI2C_SCL = 9;
 const uint8_t PUCK_SENSOR_TCS34725_SOFTI2C_SDA = 2;
 const uint8_t PUCK_SENSOR_UART_TX = 3;
 
-const PrizmDCExpansion speakerDcExpansion = driveExpansion;
+PrizmDCExpansion speakerDcExpansion = driveExpansion;
 #define SPEAKER_STEREO
 
 #define START_BUTTON_INVERSE

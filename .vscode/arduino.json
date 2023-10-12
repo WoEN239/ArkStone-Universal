@@ -1,5 +1,6 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "avrisp",
-    "sketch": "ArkStone-Universal.ino"
+    "sketch": "ArkStone-Universal.ino",
+    "output": "../build"
 }

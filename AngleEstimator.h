@@ -1,5 +1,5 @@
 //
-// Created by User on 23.10.2022.
+// Created by oaleksander on 23.10.2022.
 //
 
 #ifndef ARKSTONE_UNIVERSAL_ANGLEESTIMATOR_H

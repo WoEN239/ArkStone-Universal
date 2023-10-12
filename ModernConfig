@@ -1,0 +1,70 @@
+#include <Arduino.h>
+#include <Prizm_Controller.h>
+
+const uint8_t BARRIER_SERVO_OPEN = 100;
+const uint8_t BARRIER_SERVO_CLOSE = 77;
+
+const uint16_t SONAR_MAX_DISTANCE = 80;
+const double SONAR_UPDATE_PERIOD_MS = 30.0;
+
+const PrizmDCExpansion driveExpansion(3);
+const double DRIVETRAIN_TRACKWIDTH_MM = 324.0;
+const uint8_t LEFT_MOTOR_PORT_NUMBER = 1;
+const uint8_t RIGHT_MOTOR_PORT_NUMBER = 2;
+const double DRIVETRAIN_WHEEL_RADIUS = 102.4;
+const double DRIVETRAIN_ENCODER_RESOLUTION = 13.7*24.0;
+
+const float REDFIELD_R = 121.0;
+const float REDFIELD_G = 75.0;
+const float REDFIELD_B = 63.0;
+const float BLUEFIELD_R = 43.0;
+const float BLUEFIELD_G = 89.0;
+const float BLUEFIELD_B = 125.0;
+const float WHITEFIELD_R = 64.0;
+const float WHITEFIELD_G = 103.0;
+const float WHITEFIELD_B = 86.0;
+const float FIELD_COLOR_DISTANCE_THRESHOLD = 90.0;
+const int TEAM_FIELD_DETECTION_TIME_THRESHOLD_MS = 500;
+
+const int IMU_REFRESH_PERIOD_MS = 10;
+const float IMU_DEGREES_RESOLUTION = 100.0;
+
+const uint8_t INTAKE_PORT_NUMBER = 2;
+const uint8_t INTAKE_POWER = 100;
+
+const uint8_t LEDSTRIP_PORT_NUMBER = 2;
+
+const float ANGLE_KP = 3.7;
+const float ANGLE_KI = 0*0.1;
+const float ANGLE_KD = 0.1;
+const float ANGLE_MAX_I = 25.0;
+const float ANGLE_MIN_SAMPLE_TIME = 0.01;
+
+const float DISTANCE_KP = 5.0;
+const float DISTANCE_KI = 0*0.5;
+const float DISTANCE_KD = 0.5;
+const float DISTANCE_MAX_I = 25.0;
+const float DISTANCE_MIN_SAMPLE_TIME = 0.01;
+
+const float REDPUCK_R = 156.0;
+const float REDPUCK_G = 60.0;
+const float REDPUCK_B = 51.0;
+const float BLUEPUCK_R = 36.0;
+const float BLUEPUCK_G = 93.0;
+const float BLUEPUCK_B = 126.0;
+const float NOPUCK_R = 107.0;
+const float NOPUCK_G = 111.0;
+const float NOPUCK_B = 104.0;
+
+const double SEPARATOR_POWER_LIMIT = 100.0;
+const double SEPARATOR_COLOR_DISTANCE_THRESHOLD = 85.0;
+const double SEPARATOR_STEP_DEGREES = 120.0;
+const double SEPARATOR_ENCODER_RESOLUTION = 720.0;
+const double SEPARATOR_PUCK_DETECTION_TIME_THRESHOLD_MS = 250.0;
+const double SEPARATOR_MOVEMENT_TIMEOUT_MS = 500.0;
+const uint8_t SEPARATOR_MOTOR_PORT_NUMBER = 1;
+
+const PrizmDCExpansion speakerDcExpansion = Prizm.MotorController;
+const uint8_t SPEAKER_PORT_NUMBER = 2;
+
+const uint8_t START_BUTTON_PIN = 5;

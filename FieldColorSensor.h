@@ -1,5 +1,5 @@
 //
-// Created by User on 07.04.2023.
+// Created by oaleksander on 07.04.2023.
 //
 
 #ifndef ARKSTONE_UNIVERSAL_FIELDCOLORSENSOR_H

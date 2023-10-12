@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Prizm_Controller.h"
 #include "PuckCollectCommons.h"
+#include "Stopwatch.h"
 
 #if PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC
 #include <HiTechnicColorV2_Arduino.h>

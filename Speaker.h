@@ -1,5 +1,5 @@
 //
-// Created by User on 22.10.2022.
+// Created by oaleksander on 22.10.2022.
 //
 
 #ifndef ARKSTONE_UNIVERSAL_SPEAKER_H
@@ -18,16 +18,19 @@ void initSpeaker() {
 #endif  //SPEAKER_STEREO
 }
 
+const double k_frequency[] = {14734.2960228674, -182.2679956773, 1.13910128641602, -0.00408855355555643, 0.00000870830821415256, -0.000000010840344156628, -0.000000010840344156628, 0.00000000000726733965935332, -0.00000000000000202297588524196};
 
 void speakerTone(int8_t secondMotorPower, uint16_t frequency, uint32_t duration) {
-  double f1 = (double)frequency;
-  double f2 = f1 * f1;
-  double f3 = f1 * f2;
-  double f4 = f2 * f2;
-  double f5 = f2 * f3;
-  double f6 = f3 * f3;
-  double f7 = f3 * f4;
-  double dDelay = 14734.2960228674 - 182.2679956773 * f1 + 1.13910128641602 * f2 - 0.00408855355555643 * f3 + 0.00000870830821415256 * f4 - 0.000000010840344156628 * f5 + 0.00000000000726733965935332 * f6 - 0.00000000000000202297588524196 * f7;
+  double f[8] = {1, (double)frequency};
+  f[2] = f[1] * f[1];
+  f[3] = f[1] * f[2];
+  f[4] = f[2] * f[2];
+  f[5] = f[2] * f[3];
+  f[6] = f[3] * f[3];
+  f[7] = f[3] * f[4];
+  double dDelay = 0;
+  for(uint8_t i = 0; i < 8; i++)
+    dDelay += k_frequency[i] * f[i];
   uint16_t iDelay = dDelay;
   uint32_t t_start = millis();
   int8_t speakerPower;
