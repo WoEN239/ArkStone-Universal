@@ -1,0 +1,65 @@
+#ifndef ROBOT_CONFIG_H
+#define ROBOT_CONFIG_H
+
+//#define SPEAKER_MUTE
+
+//#define UART_DEBUG
+
+#ifdef UART_DEBUG
+//#define DEBUG_BARRIER 1
+//#define DEBUG_DISTACNE_SENSOR 2
+//#define DEBUG_DRIVETRAIN 3
+//#define DEBUG_FIELD_COLOR_SENSOR 4
+//#define DEBUG_MOVEMENT 5
+//#define DEBUG_PUCK_SENSOR 6
+//#define DEBUG_SEPARATOR 7
+//#define DEBUG_START_BUTTON 8
+//#define DEBUG_VOLTAGE_SENSOR 9
+#define DEBUG_LOOP_TIMES 10
+//#define DEBUG_DISTANCE_SENSOR 11
+//#define DEBUG_IMU_SENSOR 12
+//#define DEBUG_ANGLE_ESTIMATOR 13
+#endif  //UART_DEBUG
+
+#define HWUART_DEFAULT_BR 115200
+#define HWUART_FAST_BR 500000
+
+#define SWUART_DEFAULT_BR 9600
+#define SWUART_FAST_BR 19200
+
+const int32_t HARDWARE_SERIAL_BAUDRATE = HWUART_FAST_BR;
+const int32_t UARTSENSOR_BAUDRATE = SWUART_FAST_BR;
+const int8_t MAX_DUTY_CYCLE = 100.0;
+const double MAX_DUTY_CYCLE_INV = 0.01;
+const size_t TEAM_COLOR_DETECTION_N_SAMPLES = 5;
+const uint32_t TEAM_COLOR_DETECTION_DELAY_MS = 102;
+PrizmServoExpansion barrierServoController = Prizm.ServoController;
+
+#define SUPERLEICHT 1
+#define PIONEER 2
+#define MODERN 3
+
+#define FIELD_SENSOR_HITECHNIC 1
+#define FIELD_SENSOR_TCS34725_SOFTI2C 2
+
+#define PUCK_SENSOR_HITECHNIC 1
+#define PUCK_SENSOR_TCS34725_SOFTI2C 2
+#define PUCK_SENSOR_UART_RGB 3
+#define PUCK_SENSOR_UART_COLOR 4
+
+#define IMU_SENSOR_BNO055 1
+#define IMU_SENSOR_BNO08X 2
+
+#define ROBOT SUPERLEICHT
+
+#if ROBOT == SUPERLEICHT
+#include "SLConfig.h"
+#elif ROBOT == PIONEER
+#include "PioneerConfig.h"
+#elif ROBOT == MODERN
+#include "ModernConfig.h"
+#else
+#error No Robot!
+#endif  //ROBOT
+
+#endif  //ROBOT_CONFIG_H
