@@ -17,16 +17,16 @@
 #include "AngleEstimator.h"
 #include "Intake.h"
 #include "Light.h"
-#include "colorutils.h"
+#include <FastLED.h>
 
 void initRobot() {
   initLight();
-  showLight(CRGB::Cyan);
+  fillLight(CRGB::Cyan);
 #ifdef UART_DEBUG
   Serial.begin(HARDWARE_SERIAL_BAUDRATE);
 #endif
   Wire.begin();
-  Wire.setClock(400000);
+  Wire.setClock(WIRE_CLOCK);
   driveExpansion.controllerReset();
   Prizm.begin(DO_NOT_WAIT_FOR_START_BUTTON);
   speakerTone(0, 400, 75);
@@ -39,7 +39,7 @@ void initRobot() {
   initBarrier();
   initSeparator();
   initDistanceSensor();
-  showLight(CRGB::Orange);
+  fillLight(CRGB::Orange);
 }
 void setup() {
   initRobot();
@@ -52,13 +52,13 @@ void setup() {
   detectTeamFieldColor();
   switch (teamFieldColor) {
     case COLOR_RED:
-      showLight(0xFF0000);
+      fillLight(0xFF0000);
       break;
     case COLOR_BLUE:
-      showLight(0x0000FF);
+      fillLight(0x0000FF);
       break;
     case COLOR_NONE:
-      showLight(0xFFFFFF);
+      fillLight(0xFFFFFF);
       break;
   }
   setSeparatorColor(teamFieldColor);
