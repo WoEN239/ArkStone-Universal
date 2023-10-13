@@ -20,7 +20,7 @@ const uint16_t SONAR_DEADZONE_START = 31;
 const uint32_t SONAR_DEADZONE_END = 55;
 const double SONAR_UPDATE_PERIOD_MS = 500.0;
 
-const PrizmDCExpansion driveExpansion(2);  //(3)
+PrizmDCExpansion driveExpansion(2);  //(3)
 const uint8_t DRIVETRAIN_MAX_MOTOR_POWER = 100;
 const double DRIVETRAIN_TRACKWIDTH_MM = 357.0;
 const uint8_t DRIVETRAIN_LEFT_MOTOR_PORT_NUMBER = 1;
@@ -31,6 +31,8 @@ const double DRIVETRAIN_MOTOR_ENCODER_RESOLUTION = 24.0;
 const double DRIVETRAIN_MOTOR_RPM = 6000.0;
 const double DRIVETRAIN_NOMINAL_VOLTAGE = 12.0;
 const bool DRIVETRAIN_MOTOR_INVERSE = 0;
+#define DRIVETRAIN_POWER_FILTERING
+const double DRIVETRAIN_POWER_FILTER_T = 0.005;
 
 const double FIELD_SENSOR_UPDATE_PERIOD_MS = 101;
 #define FIELD_SENSOR FIELD_SENSOR_HITECHNIC
@@ -118,3 +120,7 @@ const uint8_t START_BUTTON_PIN = NOT_A_PIN;
 
 const double ROTATION_SPEED = 100;//100.0;
 const double MOVEMENT_SPEED = 100;//70.0;
+
+#define ARGB_LED
+const size_t LED_NUM = 17;
+const uint8_t LED_DATA_PIN = 4;
