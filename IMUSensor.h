@@ -17,8 +17,8 @@ signed short tiltReference = 0;
 const double BNO055_DEGREES_RESOLUTION = 1 / 16.0;
 const double BNO055_RADIANS_RESOLUTION = BNO055_RADIANS_RESOLUTION * PI / 180.0;
 #elif IMU_SENSOR == IMU_SENSOR_BNO08X
-#include "SparkFun_BNO080_Arduino_Library.h"
-BNO080 imu;
+#include "BNO08X.h"
+BNO08X imu;
 #endif  //IMU_SENSOR
 
 #include <math.h>
