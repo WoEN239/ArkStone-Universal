@@ -3,6 +3,7 @@
 
 #include <Prizm_Controller.h>
 #include "RobotConfig.h"
+#include "UnitConversion.h"
 #include "VoltageSensor.h"
 
 int32_t drivetrainLeftEncoderValue = 0;
@@ -25,8 +26,10 @@ void drivetrainInit() {
   driveExpansion.setDirection(DRIVETRAIN_LEFT_MOTOR_PORT_NUMBER, DRIVETRAIN_MOTOR_INVERSE ? FORWARD : REVERSE);
   driveExpansion.setDirection(DRIVETRAIN_RIGHT_MOTOR_PORT_NUMBER, DRIVETRAIN_MOTOR_INVERSE ? REVERSE : FORWARD);
   driveExpansion.resetEncoders();
+  #ifdef DRIVETRAIN_POWER_FILTERING
   leftPowerFilter.reset();
   rightPowerFilter.reset();
+  #endif //DRIVETRAIN+POWER_FILTERING
   driveExpansion.setPowers(0, 0);
 }
 
@@ -38,7 +41,7 @@ void drivetrainSetPowers(int16_t forwardPower, int16_t rotationPower) {
   forwardPower = constrain(forwardPower, -100, 100);
   rotationPower = constrain(rotationPower, -100, 100);
   leftDrivePower = forwardPower - rotationPower;
-  leftDrivePower = forwardPower + rotationPower;
+  rightDrivePower = forwardPower + rotationPower;
   int16_t max = max(abs(leftDrivePower), abs(rightDrivePower));
   if (max > DRIVETRAIN_MAX_MOTOR_POWER) {
     float multiplier = (float)DRIVETRAIN_MAX_MOTOR_POWER / (float)max;
@@ -53,10 +56,10 @@ const int32_t PROBLEMATIC_TETRIX_ENCODER_THRESHOLD = 50;
 
 void drivetrainUpdate() {
   int32_t newEncoderValue = driveExpansion.getCurrentPosition(DRIVETRAIN_LEFT_MOTOR_PORT_NUMBER);
-  if (!(newEncoderValue == PROBLEMATIC_TETRIX_ENCODER_VALUE && abs(drivetrainLeftEncoderValue - PROBLEMATIC_TETRIX_ENCODER_VALUE) > PROBLEMATIC_TETRIX_ENCODER_THRESHOLD))
+  if (!(newEncoderValue == PROBLEMATIC_TETRIX_ENCODER_VALUE ))//&& abs(drivetrainLeftEncoderValue - PROBLEMATIC_TETRIX_ENCODER_VALUE) > PROBLEMATIC_TETRIX_ENCODER_THRESHOLD))
     drivetrainLeftEncoderValue = newEncoderValue;
   newEncoderValue = driveExpansion.getCurrentPosition(DRIVETRAIN_RIGHT_MOTOR_PORT_NUMBER);
-  if (!(newEncoderValue == PROBLEMATIC_TETRIX_ENCODER_VALUE && abs(drivetrainRightEncoderValue - PROBLEMATIC_TETRIX_ENCODER_VALUE) > PROBLEMATIC_TETRIX_ENCODER_THRESHOLD))
+  if (!(newEncoderValue == PROBLEMATIC_TETRIX_ENCODER_VALUE ))// && abs(drivetrainRightEncoderValue - PROBLEMATIC_TETRIX_ENCODER_VALUE) > PROBLEMATIC_TETRIX_ENCODER_THRESHOLD))
     drivetrainRightEncoderValue = newEncoderValue;
 
   #ifdef DRIVETRAIN_POWER_FILTERING
@@ -74,10 +77,6 @@ void drivetrainUpdate() {
 
 double drivetrainGetHeadingRadians() {
   return drivetrainEncoderDifferenceToHeadingRadians(double(drivetrainRightEncoderValue - drivetrainLeftEncoderValue));
-}
-
-double drivetrainVoltageToDutyCycle(double voltage) {
-  return voltage / batteryVoltage * MAX_DUTY_CYCLE;
 }
 
 void drivetrainStop() {

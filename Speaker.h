@@ -18,7 +18,7 @@ void initSpeaker() {
 #endif  //SPEAKER_STEREO
 }
 
-const double k_frequency[] = {14734.2960228674, -182.2679956773, 1.13910128641602, -0.00408855355555643, 0.00000870830821415256, -0.000000010840344156628, -0.000000010840344156628, 0.00000000000726733965935332, -0.00000000000000202297588524196};
+const double k_frequency[] = {14734.2960228674, -182.2679956773, 1.13910128641602, -0.00408855355555643, 0.00000870830821415256, -0.000000010840344156628, 0.00000000000726733965935332, -0.00000000000000202297588524196};
 
 void speakerTone(int8_t secondMotorPower, uint16_t frequency, uint32_t duration) {
   double f[8] = {1, (double)frequency};
@@ -43,9 +43,9 @@ void speakerTone(int8_t secondMotorPower, uint16_t frequency, uint32_t duration)
     delayMicroseconds(iDelay);
     speakerDcExpansion.setPowers(-speakerPower, speakerPower);
 #else
-    speakerDcExpansion.setPowers(speakerPower, secondMotorPower);
+    speakerDcExpansion.setPower(SPEAKER_PORT_NUMBER, -speakerPower);
     delayMicroseconds(iDelay);
-    speakerDcExpansion.setPowers(-speakerPower, secondMotorPower);
+    speakerDcExpansion.setPower(SPEAKER_PORT_NUMBER, speakerPower);
 #endif  //SPEAKER_STEREO
     delayMicroseconds(iDelay);
   }

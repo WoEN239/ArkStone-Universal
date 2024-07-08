@@ -5,6 +5,7 @@
 #include "Prizm_Controller.h"
 #include "PuckCollectCommons.h"
 #include "Stopwatch.h"
+#include "RobotConfig.h"
 
 #if PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC
 #include <HiTechnicColorV2_Arduino.h>
@@ -17,9 +18,13 @@ UartColorSensor uartPuckSensor = UartColorSensor(PUCK_SENSOR_UART_TX);
 #elif PUCK_SENSOR_TYPE == PUCK_SENSOR_UART_COLOR
 #include <SoftwareSerial.h>
 SoftwareSerial uartPuckSensor = SoftwareSerial(PUCK_SENSOR_UART_TX, PUCK_SENSOR_UART_TX);
+#elif PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC_SOFTI2C
+#include <HiTechnicColorV2_SoftI2C.h>
+#include <SoftwareWire.h>
+SoftwareWire puckSensorWire(PUCK_SENSOR_HITECHNIC_SOFTI2C_SDA, PUCK_SENSOR_HITECHNIC_SOFTI2C_SCL);
 #else
 #error Unknown puck sensor type
-#endif  // FIELD_SENSOR
+#endif  // PUCK_SENSOR_TYPE
 
 Color currentPuckColor = COLOR_NONE;
 Color lastReadPuckColor = COLOR_NONE;
@@ -32,6 +37,8 @@ bool puckSensorAtPropeller = false;
 void initPuckSensor() {
 #if PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC
   HTCS2setLightFrequency(FREQUENCY_50HZ);
+#elif PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC_SOFTI2C
+  HTCS2setLightFrequency(HTCS2_FREQUENCY_50HZ, &puckSensorWire);
 #elif PUCK_SENSOR_TYPE == PUCK_SENSOR_TCS34725_SOFTI2C
   separatorTcs.begin();
 #elif PUCK_SENSOR_TYPE == PUCK_SENSOR_UART_RGB
@@ -50,6 +57,11 @@ void readPuckColorSensor(float* r_float, float* g_float, float* b_float) {
   *b_float = 0;
 #if PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC
   HTCS2readRGB((uint8_t*)r_float, (uint8_t*)g_float, (uint8_t*)b_float);
+  *r_float = (float)(*(uint8_t*)r_float);
+  *g_float = (float)(*(uint8_t*)g_float);
+  *b_float = (float)(*(uint8_t*)b_float);
+#elif PUCK_SENSOR_TYPE == PUCK_SENSOR_HITECHNIC_SOFTI2C
+  HTCS2readRGB((uint8_t*)r_float, (uint8_t*)g_float, (uint8_t*)b_float, &puckSensorWire);
   *r_float = (float)(*(uint8_t*)r_float);
   *g_float = (float)(*(uint8_t*)g_float);
   *b_float = (float)(*(uint8_t*)b_float);

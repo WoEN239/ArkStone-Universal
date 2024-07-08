@@ -30,17 +30,17 @@ void readFieldColorSensor(float* r_float, float* g_float, float* b_float) {
   *r_float = (float)(*(uint8_t*)r_float);
   *g_float = (float)(*(uint8_t*)g_float);
   *b_float = (float)(*(uint8_t*)b_float);
-#elif FIELD_SENSOR == FIELD_SENSOR_TCS34725_SOFTI2C
-  fieldTcs.getRGB(r_float, g_float, b_float);
-#else
-#endif  //FIELD_SENSOR
   double ampl = sqrt(*r_float * *r_float + *g_float * *g_float + *b_float * *b_float);
-  
   if (ampl != 0) {
     *r_float /= ampl;
     *g_float /= ampl;
     *b_float /= ampl;
   }
+#elif FIELD_SENSOR == FIELD_SENSOR_TCS34725_SOFTI2C
+  fieldTcs.getRGB(r_float, g_float, b_float);
+#else
+#endif  //FIELD_SENSOR
+  
 #ifdef DEBUG_FIELD_COLOR_SENSOR
   Serial.print("field sensor r:");
   Serial.print(*r_float);
@@ -50,7 +50,7 @@ void readFieldColorSensor(float* r_float, float* g_float, float* b_float) {
   Serial.println(*b_float);
 #endif
   /*
-  if (r_float == 0 || g_float == 0 || b_float == 0)
+  if (r_float < 1e-4 || g_float < 1e-4 || b_float < 1e-4)
     return COLOR_NONE;
   return matchColor(r_float, g_float, b_float, REDFIELD_R, REDFIELD_G, REDFIELD_B, BLUEFIELD_R, BLUEFIELD_G, BLUEFIELD_B, WHITEFIELD_R,
                     WHITEFIELD_G, WHITEFIELD_B,
@@ -70,6 +70,7 @@ void readFieldColorSensorNonZero(float* r_float, float* g_float, float* b_float)
 
 Stopwatch fieldSensorColorDetectionTimer = Stopwatch();
 
+Color lastReadFieldColor = COLOR_NONE;
 #ifdef FORCE_TEAM_COLOR
 Color teamFieldColor = FORCE_TEAM_COLOR;
 #else
@@ -77,20 +78,22 @@ Color teamFieldColor = COLOR_NONE;
 #endif
 Color enemyFieldColor = COLOR_NONE;
 #define robotIsOnTeamField (currentFieldColor == teamFieldColor) && (teamFieldColor != COLOR_NONE)
+#define robotProbablyOnTeamField (lastReadFieldColor == teamFieldColor) && (teamFieldColor != COLOR_NONE)
+
 
 Color getFieldColor() {
   float r, g, b;
   readFieldColorSensor(&r, &g, &b);
-  Color foundColor;
+  
   if (r == 0 && g == 0 && b == 0)
-    foundColor = COLOR_NONE;
-  else foundColor = matchColor(r, g, b, REDFIELD_R, REDFIELD_G, REDFIELD_B, BLUEFIELD_R, BLUEFIELD_G, BLUEFIELD_B, WHITEFIELD_R,
+    lastReadFieldColor = COLOR_NONE;
+  else lastReadFieldColor = matchColor(r, g, b, REDFIELD_R, REDFIELD_G, REDFIELD_B, BLUEFIELD_R, BLUEFIELD_G, BLUEFIELD_B, WHITEFIELD_R,
                                WHITEFIELD_G, WHITEFIELD_B);
-  if (foundColor != teamFieldColor) {
+  if (lastReadFieldColor != teamFieldColor) {
     fieldSensorColorDetectionTimer.reset();
   }
   if (fieldSensorColorDetectionTimer.milliseconds() > TEAM_FIELD_DETECTION_TIME_THRESHOLD_MS)
-    return foundColor;
+    return lastReadFieldColor;
   else
     return COLOR_NONE;
 }

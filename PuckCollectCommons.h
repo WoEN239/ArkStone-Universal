@@ -17,6 +17,19 @@ enum Color {
   COLOR_NONE = 0
 };
 
+#include <FastLED.h>
+
+CRGB colorToCode(Color color){
+switch (color) {
+        case COLOR_RED:
+            return(CRGB::Red);
+        case COLOR_BLUE:
+            return(CRGB::Blue);
+        case COLOR_NONE:
+            return(CRGB::Black);
+    }
+}
+
 uint8_t colorToIndex(Color color) {
   switch (color) {
     case COLOR_RED:

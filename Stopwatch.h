@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 
-#define MICROS_IN_SECOND 1000000
+#define MICROS_IN_SECOND 1000000.0
 #define MILLIS_IN_SECOND 1000
 #define MICROS_IN_MILLIS 1000
 
@@ -32,7 +32,7 @@ public:
 };
 
 double timeSeconds() {
-  return micros() / (float)MICROS_IN_SECOND;
+  return (double) micros() / (double)MICROS_IN_SECOND;
 }
 
 #endif  //STOPWATCH_H
